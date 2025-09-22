@@ -1,6 +1,7 @@
 package com.example.indivassignment3q5
 
 import android.os.Bundle
+import android.widget.Toast // Import Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext // Import LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,6 +53,7 @@ fun LoginForm(modifier: Modifier = Modifier) {
     var password by remember { mutableStateOf("") }
     var usernameError by remember { mutableStateOf(false) }
     var passwordError by remember { mutableStateOf(false) }
+    val context = LocalContext.current // For Toast messages
 
     Column(
         modifier = modifier
@@ -66,11 +69,19 @@ fun LoginForm(modifier: Modifier = Modifier) {
             value = username,
             onValueChange = {
                 username = it
-                usernameError = false // Clear error when user types
+                usernameError = false
             },
             label = { Text("Username") },
             modifier = Modifier.fillMaxWidth(),
-            isError = usernameError // Visually indicate error
+            isError = usernameError,
+            supportingText = { // Display error message for username
+                if (usernameError) {
+                    Text(
+                        "Username cannot be empty",
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -78,12 +89,20 @@ fun LoginForm(modifier: Modifier = Modifier) {
             value = password,
             onValueChange = {
                 password = it
-                passwordError = false // Clear error when user types
+                passwordError = false
             },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
-            isError = passwordError // Visually indicate error
+            isError = passwordError,
+            supportingText = { // Display error message for password
+                if (passwordError) {
+                    Text(
+                        "Password cannot be empty",
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -91,6 +110,10 @@ fun LoginForm(modifier: Modifier = Modifier) {
             onClick = {
                 usernameError = username.isBlank()
                 passwordError = password.isBlank()
+
+                if (!usernameError && !passwordError) { // Handle success case
+                    Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -103,7 +126,7 @@ fun LoginForm(modifier: Modifier = Modifier) {
 @Composable
 fun LoginFormPreview() {
     IndivAssignment3Q5Theme {
-        Surface(modifier = Modifier.fillMaxSize()) {
+        Surface { // Removed fillMaxSize from Surface in Preview for potentially better fit
             LoginForm()
         }
     }

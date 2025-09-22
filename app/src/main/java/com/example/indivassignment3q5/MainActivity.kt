@@ -4,26 +4,26 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement // Added
-import androidx.compose.foundation.layout.Column // Added
-import androidx.compose.foundation.layout.Spacer // Added
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth // Added
-import androidx.compose.foundation.layout.height // Added
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button // Added
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField // Added
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue // Added
-import androidx.compose.runtime.mutableStateOf // Added
-import androidx.compose.runtime.remember // Added
-import androidx.compose.runtime.setValue // Added
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation // Added
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.indivassignment3q5.ui.theme.IndivAssignment3Q5Theme
@@ -49,6 +49,8 @@ class MainActivity : ComponentActivity() {
 fun LoginForm(modifier: Modifier = Modifier) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var usernameError by remember { mutableStateOf(false) } // Error state for username
+    var passwordError by remember { mutableStateOf(false) } // Error state for password
 
     Column(
         modifier = modifier
@@ -72,14 +74,16 @@ fun LoginForm(modifier: Modifier = Modifier) {
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(), // Hides password text
+            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
-                // Validation logic will be added in a later step
+                usernameError = username.isBlank()
+                passwordError = password.isBlank()
+                // Further actions (like showing errors or success) will be in next steps
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -97,4 +101,3 @@ fun LoginFormPreview() {
         }
     }
 }
-

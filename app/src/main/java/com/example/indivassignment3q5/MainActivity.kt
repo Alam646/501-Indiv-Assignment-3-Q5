@@ -49,8 +49,8 @@ class MainActivity : ComponentActivity() {
 fun LoginForm(modifier: Modifier = Modifier) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var usernameError by remember { mutableStateOf(false) } // Error state for username
-    var passwordError by remember { mutableStateOf(false) } // Error state for password
+    var usernameError by remember { mutableStateOf(false) }
+    var passwordError by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -64,18 +64,26 @@ fun LoginForm(modifier: Modifier = Modifier) {
 
         OutlinedTextField(
             value = username,
-            onValueChange = { username = it },
+            onValueChange = {
+                username = it
+                usernameError = false // Clear error when user types
+            },
             label = { Text("Username") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            isError = usernameError // Visually indicate error
         )
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = {
+                password = it
+                passwordError = false // Clear error when user types
+            },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            isError = passwordError // Visually indicate error
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -83,7 +91,6 @@ fun LoginForm(modifier: Modifier = Modifier) {
             onClick = {
                 usernameError = username.isBlank()
                 passwordError = password.isBlank()
-                // Further actions (like showing errors or success) will be in next steps
             },
             modifier = Modifier.fillMaxWidth()
         ) {

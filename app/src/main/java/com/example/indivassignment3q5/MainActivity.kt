@@ -4,15 +4,26 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement // Added
+import androidx.compose.foundation.layout.Column // Added
+import androidx.compose.foundation.layout.Spacer // Added
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth // Added
+import androidx.compose.foundation.layout.height // Added
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button // Added
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField // Added
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue // Added
+import androidx.compose.runtime.mutableStateOf // Added
+import androidx.compose.runtime.remember // Added
+import androidx.compose.runtime.setValue // Added
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation // Added
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.indivassignment3q5.ui.theme.IndivAssignment3Q5Theme
@@ -36,14 +47,44 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun LoginForm(modifier: Modifier = Modifier) {
-    // Basic placeholder for now
-    Box(
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
-        contentAlignment = Alignment.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Text("Login Form Will Be Here")
+        Text("Login", style = MaterialTheme.typography.headlineSmall)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Username") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            visualTransformation = PasswordVisualTransformation(), // Hides password text
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                // Validation logic will be added in a later step
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Submit")
+        }
     }
 }
 
@@ -51,8 +92,9 @@ fun LoginForm(modifier: Modifier = Modifier) {
 @Composable
 fun LoginFormPreview() {
     IndivAssignment3Q5Theme {
-        Surface(modifier = Modifier.fillMaxSize()) { // Ensure preview surface takes size
+        Surface(modifier = Modifier.fillMaxSize()) {
             LoginForm()
         }
     }
 }
+
